@@ -87,3 +87,17 @@ ul {
 .code-example code{
   border: 1px solid #BBB !important;
 }
+
+.link {
+  stroke: #999;
+  stroke-width: 3;
+}
+
+#end {
+  stroke: #999;
+  fill: #999;
+}
+
+.node {
+  fill: #000;
+}

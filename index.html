@@ -1,26 +1,34 @@
 <html>
 <head>
-  <title>Sorting Visualizer</title>
+  <title>Graphing Visualizer</title>
   <link rel="shortcut icon" href="/favicon.ico" />
   <link href="main.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="coffee-script.js"></script>
-  <script type="text/coffeescript" src="VisualArray.coffee"></script>
+  <script type="text/coffeescript" src="VisualGraph.coffee"></script>
   <script type="text/coffeescript" src="graphs.coffee"></script>
   <script type="text/javascript" src="jquery-1.6.4.js"></script>
   <script type="text/javascript" src="underscore-min.js"></script>
+  <script type="text/javascript" src="d3.min.js"></script>
 </head>
 <body>
-<a href="https://github.com/thedufer/VisualSort"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://github-camo.global.ssl.fastly.net/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<a href="https://github.com/thedufer/VisualGraph"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://github-camo.global.ssl.fastly.net/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
   <div id="background">
   <div id="wrapper">
     <div id="header">
-      <h1>Sorting Visualizer</h1>
+      <h1>Graphing Visualizer</h1>
     </div>
-    <canvas id="js-canvas" width="800" height="200">Looks like your browser doesn't support the canvas element.  Try something newer, like <a href="http://www.google.com/chrome">Google Chrome</a>.</canvas>
+    <svg class="js-svg" width="800" height="200">
+      Looks like your browser doesn't support the svg element.  Try something newer, like <a href="http://www.google.com/chrome">Google Chrome</a>.
+      <defs>
+        <marker id="end" viewBox="0 -5 10 10" refX="6" refY="0" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,-1.5L4,0L0,1.5"></path>
+        </marker>
+      </defs>
+    </svg>
     <br />
     <form id="js-options">
       <div id="show-more-options">show/hide more options</div>
-      <label for="js-length">Length:</label>
+      <label for="js-length">Nodes:</label>
       <input type="text" id="js-length" value="100" />
       <select id="js-state">
         <option value="random" selected>Random</option>
