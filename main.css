@@ -90,11 +90,12 @@ ul {
 
 .link {
   stroke: #999;
-  stroke-width: 3;
+  stroke-width: 2;
 }
 
 #end {
   stroke: #999;
+  stroke-width: 3;
   fill: #999;
 }
 
