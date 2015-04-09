@@ -91,6 +91,7 @@ ul {
 .link {
   stroke: #999;
   stroke-width: 2;
+  fill: transparent;
 }
 
 #end {

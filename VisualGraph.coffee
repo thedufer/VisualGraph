@@ -15,7 +15,7 @@ class VisualGraph extends VisualRunner
     @svg = d3.select('.js-svg')
     @force = d3.layout.force()
       .charge(-120)
-      .linkDistance(30)
+      .linkDistance(50)
       .size([800, 400])
     @$links = @svg.selectAll(".link")
     @$gnodes = @svg.selectAll("g.gnode")
@@ -25,8 +25,8 @@ class VisualGraph extends VisualRunner
     super('VG')
 
   createInitialState: ->
-    nodeCount = 25
-    linkCount = 50
+    nodeCount = 10
+    linkCount = 20
     @initData =
       nodes: []
       links: []
@@ -63,7 +63,7 @@ class VisualGraph extends VisualRunner
     @$links = @$links.data(links)
     @$links
       .enter()
-      .insert('line')
+      .insert('path')
       .classed('link', true)
       .attr("marker-end", "url(#end)")
     @$links
@@ -92,10 +92,13 @@ class VisualGraph extends VisualRunner
 
     @force.on 'tick', =>
       @$links
-        .attr('x1', (d) -> d.source.x)
-        .attr('y1', (d) -> d.source.y)
-        .attr('x2', (d) -> d.target.x)
-        .attr('y2', (d) -> d.target.y)
+        .attr('d', (d) ->
+          if d.source == d.target
+            radius = 10
+            "M#{d.source.x},#{d.source.y}A#{radius},#{radius} 0 0,0 #{d.source.x},#{d.source.y - radius * 2}A#{radius},#{radius} 0 0,0 #{d.source.x},#{d.source.y}"
+          else
+            "M#{d.source.x},#{d.source.y}L#{d.target.x},#{d.target.y}"
+        )
 
       @$gnodes
         .attr('transform', (d) -> "translate(#{d.x},#{d.y})")
