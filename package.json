@@ -1,0 +1,28 @@
+{
+  "name": "VisualGraph",
+  "version": "0.0.0",
+  "description": "See a hosted version at http://www.aarondufour.com/tools/visualizer/",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify entry.coffee -t coffeeify -o main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/thedufer/VisualGraph.git"
+  },
+  "author": "Aaron Dufour",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thedufer/VisualGraph/issues"
+  },
+  "homepage": "https://github.com/thedufer/VisualGraph",
+  "dependencies": {
+    "coffeeify": "~1.0.0",
+    "underscore": "~1.8.3",
+    "d3-browserify": "~3.4.12",
+    "jquery": "~2.1.3"
+  }
+}
