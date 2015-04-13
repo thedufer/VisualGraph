@@ -1,4 +1,5 @@
 _ = require('underscore')
+$ = require('jquery')
 d3 = require('d3-browserify')
 VisualRunner = require('./VisualRunner.coffee')
 
@@ -13,16 +14,41 @@ deepClone = (obj) ->
 class VisualGraph extends VisualRunner
   constructor: ->
     @svg = d3.select('.js-svg')
-    @force = d3.layout.force()
-      .charge(-120)
-      .linkDistance(50)
-      .size([800, 400])
+    @force = @createForceLayout()
     @$links = @svg.selectAll(".link")
     @$gnodes = @svg.selectAll("g.gnode")
 
     @exposedFuncs = {}
 
+    @exposedFuncs.getNodeLength = =>
+      @data.nodes.length
+
+    @exposedFuncs.getAdjacentNodes = (n) =>
+      node = @data.nodes[n]
+      _.chain(@data.links)
+      .filter((link) -> link.source == node)
+      .map((link) -> link.target.index)
+      .value()
+
+    @exposedFuncs.addEdge = (source, target) =>
+      source = @data.nodes[source]
+      target = @data.nodes[target]
+
+      @data.links.push({ source, target })
+
+    @exposedFuncs.highlightEdge = (source, target) =>
+      sourceNode = @data.nodes[source]
+      targetNode = @data.nodes[target]
+      _.find(@data.links, _.matcher(source: sourceNode, target: targetNode))
+      .class = "highlight"
+
     super('VG')
+
+  createForceLayout: ->
+    d3.layout.force()
+      .charge(-120)
+      .linkDistance(50)
+      .size([800, 400])
 
   createInitialState: ->
     nodeCount = 10
@@ -32,10 +58,26 @@ class VisualGraph extends VisualRunner
       links: []
 
     for i in [0...nodeCount]
-      @initData.nodes.push(index: i, name: i.toString())
+      @initData.nodes.push(num: i)
 
     for i in [0...linkCount]
-      @initData.links.push(source: _.random(nodeCount - 1), target: _.random(nodeCount - 1))
+      @initData.links.push(source: _.random(nodeCount - 1), target: _.random(nodeCount - 1), cost: _.random(1, 100))
+
+    @loadInitialState()
+
+    force = @createForceLayout()
+      .nodes(@data.nodes)
+      .links(@data.links)
+      .start()
+
+    for x in [0...10]
+      force.resume()
+      while force.alpha() > 0
+        force.tick()
+
+    for [initNode, node] in _.zip(@initData.nodes, @data.nodes)
+      initNode.x = node.x
+      initNode.y = node.y
 
     @loadInitialState()
 
@@ -47,6 +89,7 @@ class VisualGraph extends VisualRunner
 
   doTask: ->
     code = $("#js-code").val()
+    $("#js-error").hide()
     try
       CoffeeScript.eval(code)
     catch error
@@ -64,11 +107,12 @@ class VisualGraph extends VisualRunner
     @$links
       .enter()
       .insert('path')
-      .classed('link', true)
       .attr("marker-end", "url(#end)")
     @$links
       .exit()
       .remove()
+    @$links
+      .attr('class', (d) -> _.compact(['link', d.class]).join(" "))
 
     @$gnodes = @$gnodes.data(nodes)
     @$gnodes
@@ -81,7 +125,7 @@ class VisualGraph extends VisualRunner
 
     @$gnodes
       .insert('text')
-      .text((d) -> d.name)
+      .text((d) -> d.num)
       .attr('x', '7')
       .attr('y', '8')
 

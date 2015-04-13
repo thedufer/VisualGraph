@@ -4,4 +4,5 @@ VisualGraph = require('./VisualGraph.coffee')
 $("#js-stop").hide()
 
 $(document).ready ->
-  window.VG = new VisualGraph()
+  window._VG = new VisualGraph()
+  $('#js-run').on 'click', -> _VG.run()

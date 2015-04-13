@@ -26,8 +26,10 @@ class VisualRunner
     )
 
   _step: ->
-    [fxName, args...] = @_funcQueue[@_index]
-    @exposedFuncs[fxName](args...)
+    if @_index >= @_funcQueue.length
+      return @pause()
+    { name, args } = @_funcQueue[@_index]
+    @exposedFuncs[name](args...)
     @render()
     @_index++
 
@@ -62,8 +64,10 @@ class VisualRunner
 
   run: (code) ->
     @_clearPrev()
+    @loadInitialState()
     @doTask()
     @_index = 0
+    @loadInitialState()
     @play()
 
   play: ->
