@@ -4,6 +4,7 @@ class VisualRunner
     @exposedObject.locals = {}
     @_funcQueue = []
     @_dataQueue = []
+    @_index = 0
 
     @setupExposedObject()
     @createInitialState()
@@ -14,6 +15,32 @@ class VisualRunner
 
   loadInitialState: ->
     throw "Not implemented"
+
+  setupSeekControl: (control) ->
+    if control?
+      @seekControl = control
+
+      pausedForSeek = false
+      @seekControl.on 'mousedown', =>
+        if @_stepId?
+          pausedForSeek = true
+          @pause()
+      @seekControl.on 'mouseup', =>
+        if pausedForSeek
+          pausedForSeek = false
+          @play()
+      @seekControl.on 'input', =>
+        @_index = parseInt(@seekControl.val(), 10)
+
+    @seekControl
+      .val(@_index)
+      .attr('min', 0)
+      .attr('step', 1)
+      .attr('max', @_funcQueue?.length ? 0)
+
+  _setIndex: (i) ->
+    @_index = i
+    @seekControl.val(@_index)
 
   _clearPrev: ->
     @_funcQueue = []
@@ -31,7 +58,7 @@ class VisualRunner
     { name, args } = @_funcQueue[@_index]
     @exposedFuncs[name](args...)
     @render()
-    @_index++
+    @_setIndex(@_index + 1)
 
   render: ->
     throw "Not implemented"
@@ -45,6 +72,8 @@ class VisualRunner
   onInitialChange: ->
     if !@_stepId?
       @loadControls()
+      @createInitialState()
+      @render()
     @renderControls()
 
   onScrollChange: ->
@@ -66,7 +95,8 @@ class VisualRunner
     @_clearPrev()
     @loadInitialState()
     @doTask()
-    @_index = 0
+    @setupSeekControl()
+    @_setIndex(0)
     @loadInitialState()
     @play()
 

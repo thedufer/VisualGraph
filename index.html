@@ -23,17 +23,12 @@
     </svg>
     <br />
     <form id="js-options">
-      <div id="show-more-options">show/hide more options</div>
-      <label for="js-length">Nodes:</label>
-      <input type="text" id="js-length" value="100" />
-      <select id="js-state">
-        <option value="random" selected>Random</option>
-        <option value="sort">Sorted</option>
-        <option value="reverse">Reverse Sorted</option>
-        <option value="custom">Custom...</option>
-      </select>
-      <button id="js-set-values">Set</button>
-      <button id="js-restore">Reset</button>
+      <input type="range" id="js-seek" min="1" max="1" step="1" />
+      <br />
+      <label for="js-nodes-length">Nodes:</label>
+      <input type="text" id="js-nodes-length" value="10" />
+      <label for="js-edges-length">Edges:</label>
+      <input type="text" id="js-edges-length" value="20" />
       <fieldset id="custom-values" class="code-example">
         <legend>Custom values</legend>
         Use coffeescript to declare the new values. Examples : <code>[4,7,2]</code>, <code>[-10..20]</code>, <code>[50..-30].concat [70..75]</code>
@@ -42,10 +37,6 @@
       <br />
       <label for="js-speed">Speed:</label>
       <input type="range" id="js-speed" min="1" value="451" max="500" step="1" />
-      <label for="js-quick-highlight">Quick Highlight:</label>
-      <input type="checkbox" id="js-quick-highlight" checked />
-      <label for="js-quick-compare">Quick Compare:</label>
-      <input type="checkbox" id="js-quick-compare" checked />
       <div id="more-options">
         <label for="js-normalize-bars">Normalize bars length:</label>
         <input type="checkbox" id="js-normalize-bars" checked />

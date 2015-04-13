@@ -18,8 +18,17 @@ class VisualGraph extends VisualRunner
     @$links = @svg.selectAll(".link")
     @$gnodes = @svg.selectAll("g.gnode")
 
-    @exposedFuncs = {}
+    @initParams = {}
 
+    @exposedFuncs = {}
+    @setupExposedFuncs()
+
+    @setupEvents()
+    @loadControls()
+
+    super('VG')
+
+  setupExposedFuncs: ->
     @exposedFuncs.getNodeLength = =>
       @data.nodes.length
 
@@ -39,10 +48,22 @@ class VisualGraph extends VisualRunner
     @exposedFuncs.highlightEdge = (source, target) =>
       sourceNode = @data.nodes[source]
       targetNode = @data.nodes[target]
-      _.find(@data.links, _.matcher(source: sourceNode, target: targetNode))
-      .class = "highlight"
+      edge = _.find(@data.links, _.matcher(source: sourceNode, target: targetNode))
+      if edge?
+        edge.class = "highlight"
 
-    super('VG')
+  setupEvents: ->
+    $("#js-nodes-length").change(@onInitialChange.bind(@))
+    $("#js-edges-length").change(@onInitialChange.bind(@))
+    @setupSeekControl($("#js-seek"))
+
+  loadControls: ->
+    @initParams.nodesLength = parseInt($("#js-nodes-length").val(), 10)
+    @initParams.edgesLength = parseInt($("#js-edges-length").val(), 10)
+
+  renderControls: ->
+    $("#js-nodes-length").val(@initParams.nodesLength)
+    $("#js-edges-length").val(@initParams.edgesLength)
 
   createForceLayout: ->
     d3.layout.force()
@@ -51,8 +72,8 @@ class VisualGraph extends VisualRunner
       .size([800, 400])
 
   createInitialState: ->
-    nodeCount = 10
-    linkCount = 20
+    nodeCount = @initParams.nodesLength
+    linkCount = @initParams.edgesLength
     @initData =
       nodes: []
       links: []

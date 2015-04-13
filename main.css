@@ -107,3 +107,7 @@ ul {
 .node {
   fill: #000;
 }
+
+#js-seek {
+  width: 800px;
+}
