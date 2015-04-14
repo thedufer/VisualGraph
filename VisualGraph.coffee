@@ -85,8 +85,12 @@ class VisualGraph extends VisualRunner
     for i in [0...nodeCount]
       @initData.nodes.push(num: i)
 
-    for i in [0...linkCount]
-      @initData.links.push(source: _.random(nodeCount - 1), target: _.random(nodeCount - 1), cost: _.random(1, 100))
+    for source in [0...nodeCount]
+      for target in [0...nodeCount]
+        @initData.links.push({ source, target, cost: _.random(1, 100) })
+
+    while @initData.links.length > linkCount
+      @initData.links.splice(_.random(0, @initData.links.length - 1), 1)
 
     @loadInitialState()
 
