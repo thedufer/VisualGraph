@@ -70,9 +70,10 @@ class VisualGraph extends VisualRunner
 
   createForceLayout: ->
     d3.layout.force()
-      .charge(-120)
-      .linkDistance(50)
+      .charge(-300)
+      .linkDistance(100)
       .size([800, 400])
+      .friction(0.4)
 
   createInitialState: ->
     nodeCount = @initParams.nodesLength
@@ -94,7 +95,7 @@ class VisualGraph extends VisualRunner
       .links(@data.links)
       .start()
 
-    for x in [0...10]
+    for x in [0...20]
       force.resume()
       while force.alpha() > 0
         force.tick()
