@@ -94,27 +94,18 @@ class VisualGraph extends VisualRunner
 
     @loadInitialState()
 
-    force = @createForceLayout()
-      .nodes(@data.nodes)
-      .links(@data.links)
-      .start()
-
-    for x in [0...20]
-      force.resume()
-      while force.alpha() > 0
-        force.tick()
-
-    for [initNode, node] in _.zip(@initData.nodes, @data.nodes)
-      initNode.x = node.x
-      initNode.y = node.y
-
-    @loadInitialState()
-
   loadInitialState: ->
+    oldData = @data
     @data = deepClone(@initData)
     for link in @data.links
       link.source = @data.nodes[link.source]
       link.target = @data.nodes[link.target]
+
+    for oldNode in oldData?.nodes ? []
+      newNode = _.find(@data.nodes, _.matcher(num: oldNode.num))
+      if newNode?
+        newNode.x = oldNode.x
+        newNode.y = oldNode.y
 
   doTask: ->
     code = $("#js-code").val()
