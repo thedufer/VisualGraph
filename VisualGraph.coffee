@@ -60,6 +60,9 @@ class VisualGraph extends VisualRunner
   loadControls: ->
     @initParams.nodesLength = parseInt($("#js-nodes-length").val(), 10)
     @initParams.edgesLength = parseInt($("#js-edges-length").val(), 10)
+    maxEdges = @initParams.nodesLength * @initParams.nodesLength
+    if @initParams.edgesLength > maxEdges
+      @initParams.edgesLength = maxEdges
 
   renderControls: ->
     $("#js-nodes-length").val(@initParams.nodesLength)

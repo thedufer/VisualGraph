@@ -30,17 +30,29 @@ class VisualRunner
           pausedForSeek = false
           @play()
       @seekControl.on 'input', =>
-        @_index = parseInt(@seekControl.val(), 10)
+        @_setIndex(parseInt(@seekControl.val(), 10))
 
     @seekControl
       .val(@_index)
       .attr('min', 0)
       .attr('step', 1)
-      .attr('max', @_funcQueue?.length ? 0)
+      .attr('max', (@_funcQueue?.length || 1) - 1)
 
   _setIndex: (i) ->
-    @_index = i
+    runOneStep = (step) =>
+      { name, args } = @_funcQueue[step]
+      @exposedFuncs[name](args...)
+    prevIndex = @_index
     @seekControl.val(@_index)
+
+    if prevIndex > i
+      @loadInitialState()
+      @_index = 0
+    while @_index < i
+      runOneStep(@_index)
+      @_index++
+      
+    @render()
 
   _clearPrev: ->
     @_funcQueue = []
@@ -55,9 +67,6 @@ class VisualRunner
   _step: ->
     if @_index >= @_funcQueue.length
       return @pause()
-    { name, args } = @_funcQueue[@_index]
-    @exposedFuncs[name](args...)
-    @render()
     @_setIndex(@_index + 1)
 
   render: ->
@@ -96,14 +105,13 @@ class VisualRunner
     @loadInitialState()
     @doTask()
     @setupSeekControl()
-    @_setIndex(0)
     @loadInitialState()
+    @_setIndex(0)
     @play()
 
   play: ->
     if @_stepId?
       return
-    @_step()
     @_stepId = setInterval(@_step.bind(@), 100)
 
   pause: ->
