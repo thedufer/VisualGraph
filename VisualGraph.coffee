@@ -161,7 +161,10 @@ class VisualGraph extends VisualRunner
             radius = 10
             "M#{d.source.x},#{d.source.y}A#{radius},#{radius} 0 0,0 #{d.source.x},#{d.source.y - radius * 2}A#{radius},#{radius} 0 0,0 #{d.source.x},#{d.source.y}"
           else
-            "M#{d.source.x},#{d.source.y}L#{d.target.x},#{d.target.y}"
+            dx = d.target.x - d.source.x
+            dy = d.target.y - d.source.y
+            dr = Math.sqrt(dx * dx + dy * dy) * 2
+            "M#{ d.source.x },#{ d.source.y }A#{ dr },#{ dr } 0 0,1 #{ d.target.x },#{ d.target.y }"
         )
 
       @$gnodes
