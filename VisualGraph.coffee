@@ -15,8 +15,6 @@ class VisualGraph extends VisualRunner
   constructor: ->
     @svg = d3.select('.js-svg')
     @force = @createForceLayout()
-    @$links = @svg.selectAll(".link")
-    @$gnodes = @svg.selectAll("g.gnode")
 
     @initParams = {}
 
@@ -55,6 +53,8 @@ class VisualGraph extends VisualRunner
   setupEvents: ->
     $("#js-nodes-length").change(@onInitialChange.bind(@))
     $("#js-edges-length").change(@onInitialChange.bind(@))
+    $("#js-show-edge-cost").change(@render.bind(@))
+    $("#js-show-node-num").change(@render.bind(@))
     @setupSeekControl($("#js-seek"))
 
   loadControls: ->
@@ -122,39 +122,52 @@ class VisualGraph extends VisualRunner
       .links(links)
       .start()
 
-    @$links = @$links.data(links)
-    @$links
+    $links = @svg.selectAll('.link').data(links)
+    $links
       .enter()
       .insert('path')
       .attr("marker-end", "url(#end)")
-    @$links
+    $links
       .exit()
       .remove()
-    @$links
+    $links
       .attr('class', (d) -> _.compact(['link', d.class]).join(" "))
 
-    @$gnodes = @$gnodes.data(nodes)
-    @$gnodes
+    if $("#js-show-edge-cost").prop("checked")
+      $linkLabels = @svg.selectAll(".link-label").data(links)
+      $linkLabels
+        .enter()
+        .insert('text')
+        .attr("text-anchor", "middle")
+        .classed('link-label', true)
+      $linkLabels
+        .exit()
+        .remove()
+    else
+      @svg.selectAll('.link-label').remove()
+
+    $gnodes = @svg.selectAll(".gnode").data(nodes)
+    $newgnodes = $gnodes
       .enter()
       .insert('g')
       .classed('gnode', true)
-    @$gnodes
+    $gnodes
       .exit()
       .remove()
 
-    @$gnodes
+    $newgnodes
       .insert('text')
       .text((d) -> d.num)
       .attr('x', '7')
       .attr('y', '8')
 
-    @$gnodes
+    $newgnodes
       .insert('circle')
       .classed('node', true)
       .attr('r', 4)
 
     @force.on 'tick', =>
-      @$links
+      @svg.selectAll('.link')
         .attr('d', (d) ->
           if d.source == d.target
             radius = 10
@@ -166,7 +179,26 @@ class VisualGraph extends VisualRunner
             "M#{ d.source.x },#{ d.source.y }A#{ dr },#{ dr } 0 0,1 #{ d.target.x },#{ d.target.y }"
         )
 
-      @$gnodes
+      @svg.selectAll('.link-label')
+        .attr('transform', (d) ->
+          if d.source == d.target
+            x = d.source.x - 7
+            y = d.source.y - 23
+          else
+            dx = d.target.x - d.source.x
+            dy = d.target.y - d.source.y
+            theta = -1 * Math.PI / 9
+            cosTheta = Math.cos(theta)
+            sinTheta = Math.sin(theta)
+            newdx = dx * cosTheta - dy * sinTheta
+            newdy = dx * sinTheta + dy * cosTheta
+            x = (d.source.x * 2 + newdx) / 2
+            y = (d.source.y * 2 + newdy) / 2 + 8
+          "translate(#{ x },#{ y })"
+        )
+        .text((d) -> d.cost)
+
+      @svg.selectAll('.gnode')
         .attr('transform', (d) -> "translate(#{d.x},#{d.y})")
 
 # export the VisualGraph class.
