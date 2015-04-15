@@ -73,7 +73,6 @@ class VisualGraph extends VisualRunner
       .charge(-300)
       .linkDistance(100)
       .size([800, 400])
-      .friction(0.4)
 
   createInitialState: ->
     nodeCount = @initParams.nodesLength
