@@ -103,8 +103,7 @@ class VisualGraph extends VisualRunner
     for oldNode in oldData?.nodes ? []
       newNode = _.find(@data.nodes, _.matcher(num: oldNode.num))
       if newNode?
-        newNode.x = oldNode.x
-        newNode.y = oldNode.y
+        _.extend(newNode, _.pick(oldNode, 'x', 'y', 'px', 'py'))
 
   doTask: ->
     code = $("#js-code").val()
