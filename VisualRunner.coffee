@@ -29,6 +29,7 @@ class VisualRunner
         if pausedForSeek
           @play()
         pausedForSeek = false
+        return
       @seekControl.on 'input', =>
         @_setIndex(parseInt(@seekControl.val(), 10))
 
