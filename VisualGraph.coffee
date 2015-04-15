@@ -34,8 +34,15 @@ class VisualGraph extends VisualRunner
       node = @data.nodes[n]
       _.chain(@data.links)
       .filter((link) -> link.source == node)
-      .map((link) -> link.target.index)
+      .map((link) -> n: link.target.num, cost: link.cost)
       .value()
+
+    @exposedFuncs.setCost = (source, target, newCost) =>
+      sourceNode = @data.nodes[source]
+      targetNode = @data.nodes[target]
+      edge = _.find(@data.links, _.matcher(source: sourceNode, target: targetNode))
+      if edge?
+        edge.cost = newCost
 
     @exposedFuncs.addEdge = (source, target) =>
       source = @data.nodes[source]
