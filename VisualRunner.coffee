@@ -27,8 +27,8 @@ class VisualRunner
           @pause()
       @seekControl.on 'mouseup', =>
         if pausedForSeek
-          pausedForSeek = false
           @play()
+        pausedForSeek = false
       @seekControl.on 'input', =>
         @_setIndex(parseInt(@seekControl.val(), 10))
 
@@ -36,14 +36,13 @@ class VisualRunner
       .val(@_index)
       .attr('min', 0)
       .attr('step', 1)
-      .attr('max', (@_funcQueue?.length || 1) - 1)
+      .attr('max', (@_funcQueue?.length || 0))
 
   _setIndex: (i) ->
     runOneStep = (step) =>
       { name, args } = @_funcQueue[step]
       @exposedFuncs[name](args...)
     prevIndex = @_index
-    @seekControl.val(@_index)
 
     if prevIndex > i
       @loadInitialState()
@@ -51,6 +50,8 @@ class VisualRunner
     while @_index < i
       runOneStep(@_index)
       @_index++
+
+    @seekControl.val(@_index)
       
     @render()
 
