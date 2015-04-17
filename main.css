@@ -109,5 +109,10 @@ ul {
 }
 
 #js-seek {
-  width: 800px;
+  width: 775px;
+}
+
+button.play-pause {
+  width: 20px;
+  height: 20px;
 }

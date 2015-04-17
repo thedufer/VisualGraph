@@ -24,6 +24,9 @@ class VisualGraph extends VisualRunner
     @setupEvents()
     @loadControls()
 
+    @pauseButton = $("#js-pause")
+    @playButton = $("#js-play")
+
     super('VG')
 
   setupExposedFuncs: ->
@@ -58,11 +61,20 @@ class VisualGraph extends VisualRunner
         edge.class = "highlight"
 
   setupEvents: ->
-    $("#js-nodes-length").change(@onInitialChange.bind(@))
-    $("#js-edges-length").change(@onInitialChange.bind(@))
-    $("#js-show-edge-cost").change(@render.bind(@))
-    $("#js-show-node-num").change(@render.bind(@))
-    @setupSeekControl($("#js-seek"))
+    $('#js-nodes-length').change(@onInitialChange.bind(@))
+    $('#js-edges-length').change(@onInitialChange.bind(@))
+    $('#js-show-edge-cost').change(@render.bind(@))
+    $('#js-show-node-num').change(@render.bind(@))
+    $('#js-run').on 'click', =>
+      @run()
+      $('#js-play').prop('disabled', false)
+    $('#js-play').click =>
+      @play()
+      return false
+    $('#js-pause').click =>
+      @pause()
+      return false
+    @setupSeekControl($('#js-seek'))
 
   loadControls: ->
     @initParams.nodesLength = parseInt($("#js-nodes-length").val(), 10)

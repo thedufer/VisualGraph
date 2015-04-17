@@ -116,8 +116,14 @@ class VisualRunner
       return
     @_stepId = setInterval(@_step.bind(@), 100)
 
+    @playButton?.hide()
+    @pauseButton?.show()
+
   pause: ->
     clearInterval(@_stepId)
     @_stepId = null
+
+    @pauseButton?.hide()
+    @playButton?.show()
 
 module.exports = VisualRunner
