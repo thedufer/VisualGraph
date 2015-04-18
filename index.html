@@ -59,29 +59,21 @@
       <br />
       <div id="description-wrapper">
         <div id="description">
-          Write some code in <a href="http://jashkenas.github.com/coffee-script/">CoffeeScript</a> and hit run.  The array will show what's going on.
+          Write some code in <a href="http://jashkenas.github.com/coffee-script/">CoffeeScript</a> and hit run.  The graph will show what's going on.
           <br />
           <br />
-          Use the following methods on <span class="code">VA</span>:
+          Use the following methods on <span class="code">VG</span>:
           <br />
           <ul>
-            <li><span class="code">swap(i, j)</span>: Swap the values at indices i and j.</li>
-            <li><span class="code">insert(i, j)</span>: Move the value at index i to index j and slide the elements in between to fill.</li>
-            <li><span class="code">get(i)</span>: Return the value of the element at i.</li>
-            <li><span class="code">lt(i, j)</span>: Return the result of <span class="code">VA.get(i) &lt; VA.get(j)</span>.</li>
-            <li><span class="code">lte(i, j)</span>: Return the result of <span class="code">VA.get(i) &lt;= VA.get(j)</span>.</li>
-            <li><span class="code">gt(i, j)</span>: Return the result of <span class="code">VA.get(i) &gt; VA.get(j)</span>.</li>
-            <li><span class="code">gte(i, j)</span>: Return the result of <span class="code">VA.get(i) &gt;= VA.get(j)</span>.</li>
-            <li><span class="code">eq(i, j)</span>: Return the result of <span class="code">VA.get(i) == VA.get(j)</span>.</li>
-            <li><span class="code">neq(i, j)</span>: Return the result of <span class="code">VA.get(i) != VA.get(j)</span>.</li>
-            <li><span class="code">highlight(i)</span>: Highlight the i<sup>th</sup> element.</li>
-            <li><span class="code">highlight([i<sub>1</sub>, i<sub>2</sub>...i<sub>n</sub>])</span>: Highlight the i<sub>1</sub><sup>th</sup>, i<sub>2</sub><sup>th</sup>... i<sub>n</sub><sup>th</sup> elements.</li>
-            <li><span class="code">persistHighlight(i)</span>: Highlight the i<sup>th</sup> element until the next <span class="code">persistHighlight</span> call.</li>
-            <li><span class="code">persistHighlight([i<sub>1</sub>, i<sub>2</sub>...i<sub>n</sub>])</span>: Highlight the i<sub>1</sub><sup>th</sup>, i<sub>2</sub><sup>th</sup>... i<sub>n</sub><sup>th</sup> elements until the next <span class="code">persistHighlight</span> call.</li>
-            <li><span class="code">locals</span>: A map (initially empty) where you can store primitives that you want to see as the sort animates.  See bubble sort for an example.</li>
+            <li><span class="code">getNodeCount()</span>: get number of nodes in the graph</li>
+            <li><span class="code">getAdjacentNodes(n)</span>: returns an array of objects like <span class="code">{ node, cost }</span> for each node adjacent to to node n</li>
+            <li><span class="code">setCost(n, m, cost)</span>: set the cost of the edge from node n to node m</li>
+            <li><span class="code">highlightEdge(n, m)</span>: highlight the edge from node n to node m</li>
+            <li><span class="code">addEdge(n, m, cost)</span>: add an edge from node n to node m with cost cost</li>
+            <li><span class="code">locals</span>: A map (initially empty) where you can store primitives that you want to see as the sort animates.</li>
           </ul>
           <br />
-          Try out the prewritten sorts for syntax examples.
+          Try out the prewritten algorithms for syntax examples.
           <br />
           <br />
           Notes:
@@ -89,12 +81,6 @@
           <ul>
             <li>
               Nothing will display if there is an infinite loop.
-            </li>
-            <li>
-              The "Stop" button won't save the state of your code, but will save the state of the array.
-            </li>
-            <li>
-              The items are integers in the range of 0 to 2^10-1. There may be duplicates.
             </li>
           </ul>
           <br />

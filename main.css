@@ -110,9 +110,11 @@ ul {
 
 #js-seek {
   width: 775px;
+  vertical-align: top;
 }
 
 button.play-pause {
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
+  vertical-align: top;
 }

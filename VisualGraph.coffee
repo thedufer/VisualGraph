@@ -30,7 +30,7 @@ class VisualGraph extends VisualRunner
     super('VG')
 
   setupExposedFuncs: ->
-    @exposedFuncs.getNodeLength = =>
+    @exposedFuncs.getNodeCount = =>
       @data.nodes.length
 
     @exposedFuncs.getAdjacentNodes = (n) =>
@@ -47,11 +47,18 @@ class VisualGraph extends VisualRunner
       if edge?
         edge.cost = newCost
 
-    @exposedFuncs.addEdge = (source, target) =>
+    @exposedFuncs.addEdge = (source, target, cost) =>
       source = @data.nodes[source]
       target = @data.nodes[target]
 
-      @data.links.push({ source, target })
+      @data.links.push({ source, target, cost })
+
+    @exposedFuncs.unhighlightEdge = (source, target) =>
+      sourceNode = @data.nodes[source]
+      targetNode = @data.nodes[target]
+      edge = _.find(@data.links, _.matcher(source: sourceNode, target: targetNode))
+      if edge?
+        edge.class = ""
 
     @exposedFuncs.highlightEdge = (source, target) =>
       sourceNode = @data.nodes[source]
