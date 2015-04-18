@@ -53,19 +53,29 @@ class VisualGraph extends VisualRunner
 
       @data.links.push({ source, target, cost })
 
+    @exposedFuncs.highlightEdge = (source, target, newColor="red") =>
+      sourceNode = @data.nodes[source]
+      targetNode = @data.nodes[target]
+      edge = _.find(@data.links, _.matcher(source: sourceNode, target: targetNode))
+      if edge?
+        edge.color = newColor
+
     @exposedFuncs.unhighlightEdge = (source, target) =>
       sourceNode = @data.nodes[source]
       targetNode = @data.nodes[target]
       edge = _.find(@data.links, _.matcher(source: sourceNode, target: targetNode))
       if edge?
-        edge.class = ""
+        edge.color = ""
 
-    @exposedFuncs.highlightEdge = (source, target) =>
-      sourceNode = @data.nodes[source]
-      targetNode = @data.nodes[target]
-      edge = _.find(@data.links, _.matcher(source: sourceNode, target: targetNode))
-      if edge?
-        edge.class = "highlight"
+    @exposedFuncs.highlightNode = (n, newColor="red") =>
+      node = @data.nodes[n]
+      if node?
+        node.color = newColor
+
+    @exposedFuncs.unhighlightNode = (n) =>
+      node = @data.nodes[n]
+      if node?
+        node.color = ""
 
   setupEvents: ->
     $('#js-nodes-length').change(@onInitialChange.bind(@))
@@ -162,7 +172,8 @@ class VisualGraph extends VisualRunner
       .exit()
       .remove()
     $links
-      .attr('class', (d) -> _.compact(['link', d.class]).join(" "))
+      .classed('link', true)
+      .style('stroke', (d) -> d.color)
 
     if $("#js-show-edge-cost").prop("checked")
       $linkLabels = @svg.selectAll(".link-label").data(links)
@@ -199,6 +210,9 @@ class VisualGraph extends VisualRunner
       .insert('circle')
       .classed('node', true)
       .attr('r', 4)
+
+    @svg.selectAll('.node').data(nodes)
+      .style('fill', (d) => d.color)
 
     @force.on 'tick', =>
       @svg.selectAll('.link')

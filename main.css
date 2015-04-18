@@ -94,10 +94,6 @@ ul {
   fill: transparent;
 }
 
-.link.highlight {
-  stroke: #f00;
-}
-
 #end {
   stroke: #999;
   stroke-width: 3;
@@ -105,7 +101,7 @@ ul {
 }
 
 .node {
-  fill: #000;
+  fill: #777;
 }
 
 #js-seek {

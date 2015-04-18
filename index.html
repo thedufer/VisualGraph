@@ -68,7 +68,10 @@
             <li><span class="code">getNodeCount()</span>: get number of nodes in the graph</li>
             <li><span class="code">getAdjacentNodes(n)</span>: returns an array of objects like <span class="code">{ node, cost }</span> for each node adjacent to to node n</li>
             <li><span class="code">setCost(n, m, cost)</span>: set the cost of the edge from node n to node m</li>
-            <li><span class="code">highlightEdge(n, m)</span>: highlight the edge from node n to node m</li>
+            <li><span class="code">highlightEdge(n, m[, color])</span>: highlight the edge from node n to node m with color (default: "red")</li>
+            <li><span class="code">unhighlightEdge(n, m)</span>: unhighlight the edge from node n to node m</li>
+            <li><span class="code">highlightNode(n[, color])</span>: highlight node n with color (default: "red")</li>
+            <li><span class="code">unhighlightNode(n)</span>: unhighlight node n to node m</li>
             <li><span class="code">addEdge(n, m, cost)</span>: add an edge from node n to node m with cost cost</li>
             <li><span class="code">locals</span>: A map (initially empty) where you can store primitives that you want to see as the sort animates.</li>
           </ul>
