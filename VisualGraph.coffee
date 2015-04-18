@@ -132,7 +132,13 @@ class VisualGraph extends VisualRunner
     catch error
       $("#js-error").html(error.message).show()
 
-  render: ->
+  render: (data) ->
+    # render locals
+    $('#js-result').html('')
+    for key, val of data.locals
+      $('#js-result').append("#{ key }: #{ val }<br />")
+
+    # render graph
     nodes = @data.nodes
     links = @data.links
     @force

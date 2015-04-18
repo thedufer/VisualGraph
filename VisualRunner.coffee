@@ -1,3 +1,5 @@
+_ = require('underscore')
+
 class VisualRunner
   constructor: (name) ->
     window[name] = @exposedObject = {}
@@ -8,7 +10,7 @@ class VisualRunner
 
     @setupExposedObject()
     @createInitialState()
-    @render()
+    @render({})
 
   createInitialState: ->
     throw "Not implemented"
@@ -53,8 +55,8 @@ class VisualRunner
       @_index++
 
     @seekControl.val(@_index)
-      
-    @render()
+
+    @render(@_dataQueue[@_index - 1] ? {})
 
   _clearPrev: ->
     @_funcQueue = []
@@ -63,7 +65,7 @@ class VisualRunner
   _save: (name, args...) ->
     @_funcQueue.push({ name, args })
     @_dataQueue.push(
-      locals: @exposedObject.locals
+      locals: _.clone(@exposedObject.locals)
     )
 
   _step: ->
@@ -84,7 +86,7 @@ class VisualRunner
     if !@_stepId?
       @loadControls()
       @createInitialState()
-      @render()
+      @render({})
     @renderControls()
 
   onScrollChange: ->
