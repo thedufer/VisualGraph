@@ -108,6 +108,7 @@ class VisualGraph extends VisualRunner
     d3.layout.force()
       .charge(-300)
       .linkDistance(100)
+      .linkStrength(0.9)
       .size([800, 400])
 
   createInitialState: ->
