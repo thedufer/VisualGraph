@@ -86,6 +86,8 @@ class VisualRunner
     if !@_stepId?
       @loadControls()
       @createInitialState()
+      @_clearPrev()
+      @setupSeekControl()
       @render({})
     @renderControls()
 

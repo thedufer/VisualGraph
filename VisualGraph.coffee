@@ -137,6 +137,9 @@ class VisualGraph extends VisualRunner
 
     @loadInitialState()
 
+    $("#js-pause").hide()
+    $("#js-play").prop("disabled", true).show()
+
   loadInitialState: ->
     oldData = @data
     @data = deepClone(@initData)
