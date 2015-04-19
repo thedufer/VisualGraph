@@ -1,6 +1,7 @@
 _ = require('underscore')
 $ = require('jquery')
 d3 = require('d3-browserify')
+algorithms = require('./algorithms.coffee')
 VisualRunner = require('./VisualRunner.coffee')
 
 deepClone = (obj) ->
@@ -27,6 +28,10 @@ class VisualGraph extends VisualRunner
     @pauseButton = $("#js-pause")
     @playButton = $("#js-play")
 
+    $select = $('#js-algorithms')
+    for name of algorithms
+      $select.append("<option value=\"#{ name }\">#{ name }</option>")
+
     super('VG')
 
   setupExposedFuncs: ->
@@ -37,7 +42,7 @@ class VisualGraph extends VisualRunner
       node = @data.nodes[n]
       _.chain(@data.links)
       .filter((link) -> link.source == node)
-      .map((link) -> n: link.target.num, cost: link.cost)
+      .map((link) -> node: link.target.num, cost: link.cost)
       .value()
 
     @exposedFuncs.setCost = (source, target, newCost) =>
@@ -91,6 +96,8 @@ class VisualGraph extends VisualRunner
     $('#js-pause').click =>
       @pause()
       return false
+    $('#js-algorithms').change =>
+      $('#js-code').text(algorithms[$('#js-algorithms').val()])
     @setupSeekControl($('#js-seek'))
 
   loadControls: ->
