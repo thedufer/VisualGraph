@@ -1,6 +1,10 @@
 module.exports =
-  blank: ""
-  dijkstra: """nodes = ({ node: n, cost: Infinity } for n in [0...VG.getNodeCount()])
+  blank:
+    name: "Empty"
+    text: ""
+  dijkstra:
+    name: "Dijkstra's algorithm"
+    text: """nodes = ({ node: n, cost: Infinity } for n in [0...VG.getNodeCount()])
 nodes[0].cost = 0
 VG.highlightNode(0, "red") # start node
 unvisited = nodes.slice()

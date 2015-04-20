@@ -29,8 +29,8 @@ class VisualGraph extends VisualRunner
     @playButton = $("#js-play")
 
     $select = $('#js-algorithms')
-    for name of algorithms
-      $select.append("<option value=\"#{ name }\">#{ name }</option>")
+    for key, { name, text } of algorithms
+      $select.append("<option value=\"#{ key }\">#{ name }</option>")
 
     super('VG')
 
@@ -97,7 +97,7 @@ class VisualGraph extends VisualRunner
       @pause()
       return false
     $('#js-algorithms').change =>
-      $('#js-code').text(algorithms[$('#js-algorithms').val()])
+      $('#js-code').text(algorithms[$('#js-algorithms').val()].text)
     @setupSeekControl($('#js-seek'))
 
   loadControls: ->
