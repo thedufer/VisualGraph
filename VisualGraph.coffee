@@ -32,6 +32,8 @@ class VisualGraph extends VisualRunner
     for key, { name, text } of algorithms
       $select.append("<option value=\"#{ key }\">#{ name }</option>")
 
+    @clearSavedState()
+
     super('VG')
 
   setupExposedFuncs: ->
@@ -118,31 +120,47 @@ class VisualGraph extends VisualRunner
       .linkStrength(0.9)
       .size([800, 400])
 
-  createInitialState: ->
+  clearSavedState: ->
+    @savedState = {}
+
+  createInitialState: (key) ->
     nodeCount = @initParams.nodesLength
     linkCount = @initParams.edgesLength
-    @initData =
+    @savedState[key] =
       nodes: []
       links: []
 
     for i in [0...nodeCount]
-      @initData.nodes.push(num: i)
+      @savedState[key].nodes.push(num: i)
 
     for source in [0...nodeCount]
       for target in [0...nodeCount]
-        @initData.links.push({ source, target, cost: _.random(1, 100) })
+        @savedState[key].links.push({ source, target, cost: _.random(1, 100) })
 
-    while @initData.links.length > linkCount
-      @initData.links.splice(_.random(0, @initData.links.length - 1), 1)
+    while @savedState[key].links.length > linkCount
+      @savedState[key].links.splice(_.random(0, @savedState[key].links.length - 1), 1)
 
-    @loadInitialState()
+    @loadState(key)
 
     $("#js-pause").hide()
     $("#js-play").prop("disabled", true).show()
 
-  loadInitialState: ->
+  saveState: (key) ->
+    @savedState[key] = {}
+
+    @savedState[key].nodes =
+      for node in @data.nodes
+        { num: node.num }
+
+    @savedState[key].links =
+      for link in @data.links
+        { source: link.source.num, target: link.target.num, cost: link.cost }
+
+    console.log @savedState[key]
+
+  loadState: (key) ->
     oldData = @data
-    @data = deepClone(@initData)
+    @data = deepClone(@savedState[key])
     for link in @data.links
       link.source = @data.nodes[link.source]
       link.target = @data.nodes[link.target]

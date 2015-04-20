@@ -9,13 +9,20 @@ class VisualRunner
     @_index = 0
 
     @setupExposedObject()
-    @createInitialState()
+    @createInitialState(0)
     @render({})
 
-  createInitialState: ->
+  clearSavedState: ->
     throw "Not implemented"
 
-  loadInitialState: ->
+  # Expected to save state under key
+  createInitialState: (key) ->
+    throw "Not implemented"
+
+  saveState: (key) ->
+    throw "Not implemented"
+
+  loadState: (key) ->
     throw "Not implemented"
 
   setupSeekControl: (control) ->
@@ -48,7 +55,7 @@ class VisualRunner
     prevIndex = @_index
 
     if prevIndex > i
-      @loadInitialState()
+      @loadState(0)
       @_index = 0
     while @_index < i
       runOneStep(@_index)
@@ -85,7 +92,7 @@ class VisualRunner
   onInitialChange: ->
     if !@_stepId?
       @loadControls()
-      @createInitialState()
+      @createInitialState(0)
       @_clearPrev()
       @setupSeekControl()
       @render({})
@@ -108,10 +115,10 @@ class VisualRunner
 
   run: (code) ->
     @_clearPrev()
-    @loadInitialState()
+    @loadState(0)
     @doTask()
     @setupSeekControl()
-    @loadInitialState()
+    @loadState(0)
     @_setIndex(0)
     @play()
 
