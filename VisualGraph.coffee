@@ -150,13 +150,11 @@ class VisualGraph extends VisualRunner
 
     @savedState[key].nodes =
       for node in @data.nodes
-        { num: node.num }
+        { num: node.num, color: node.color }
 
     @savedState[key].links =
       for link in @data.links
-        { source: link.source.num, target: link.target.num, cost: link.cost }
-
-    console.log @savedState[key]
+        { source: link.source.num, target: link.target.num, cost: link.cost, color: link.color }
 
   loadState: (key) ->
     oldData = @data

@@ -1,11 +1,10 @@
 _ = require('underscore')
 
+KEY_FRAME_SPACING = 100
+
 class VisualRunner
   constructor: (name) ->
     window[name] = @exposedObject = {}
-    @exposedObject.locals = {}
-    @_funcQueue = []
-    @_dataQueue = []
     @_index = 0
 
     @setupExposedObject()
@@ -55,8 +54,8 @@ class VisualRunner
     prevIndex = @_index
 
     if prevIndex > i
-      @loadState(0)
-      @_index = 0
+      @_index = Math.floor(i / KEY_FRAME_SPACING) * KEY_FRAME_SPACING
+      @loadState(@_index)
     while @_index < i
       runOneStep(@_index)
       @_index++
@@ -68,12 +67,15 @@ class VisualRunner
   _clearPrev: ->
     @_funcQueue = []
     @_dataQueue = []
+    @exposedObject.locals = {}
 
   _save: (name, args...) ->
     @_funcQueue.push({ name, args })
     @_dataQueue.push(
       locals: _.clone(@exposedObject.locals)
     )
+    if @_funcQueue.length % KEY_FRAME_SPACING == 0
+      @saveState(@_funcQueue.length)
 
   _step: ->
     if @_index >= @_funcQueue.length
@@ -105,8 +107,8 @@ class VisualRunner
     for name, fx of @exposedFuncs
       do (name, fx) =>
         wrappedFunc = (args...) =>
-          @_save(name, args...)
           fx(args...)
+          @_save(name, args...)
 
         @exposedObject[name] = wrappedFunc
 
