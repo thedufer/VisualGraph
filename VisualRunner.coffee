@@ -6,6 +6,7 @@ class VisualRunner
   constructor: (name) ->
     window[name] = @exposedObject = {}
     @_index = 0
+    @stepLength = 100
 
     @setupExposedObject()
     @createInitialState(0)
@@ -14,7 +15,6 @@ class VisualRunner
   clearSavedState: ->
     throw "Not implemented"
 
-  # Expected to save state under key
   createInitialState: (key) ->
     throw "Not implemented"
 
@@ -107,8 +107,9 @@ class VisualRunner
     for name, fx of @exposedFuncs
       do (name, fx) =>
         wrappedFunc = (args...) =>
-          fx(args...)
+          ret = fx(args...)
           @_save(name, args...)
+          ret
 
         @exposedObject[name] = wrappedFunc
 
@@ -124,16 +125,20 @@ class VisualRunner
     @_setIndex(0)
     @play()
 
+  _stepAndContinue: ->
+    @_step()
+    @_stepId = setTimeout(@_stepAndContinue.bind(@), @stepLength)
+
   play: ->
     if @_stepId?
       return
-    @_stepId = setInterval(@_step.bind(@), 100)
+    @_stepId = setTimeout(@_stepAndContinue.bind(@), @stepLength)
 
     @playButton?.hide()
     @pauseButton?.show()
 
   pause: ->
-    clearInterval(@_stepId)
+    clearTimeout(@_stepId)
     @_stepId = null
 
     @pauseButton?.hide()

@@ -92,6 +92,7 @@ class VisualGraph extends VisualRunner
     $('#js-run').on 'click', =>
       @run()
       $('#js-play').prop('disabled', false)
+      return false
     $('#js-play').click =>
       @play()
       return false
@@ -100,6 +101,12 @@ class VisualGraph extends VisualRunner
       return false
     $('#js-algorithms').change =>
       $('#js-code').text(algorithms[$('#js-algorithms').val()].text)
+      return
+    $("#js-speed").on 'input', =>
+      speed = $("#js-speed").val()
+      if isFinite speed
+        @stepLength = 501 - +speed
+      return
     @setupSeekControl($('#js-seek'))
 
   loadControls: ->
