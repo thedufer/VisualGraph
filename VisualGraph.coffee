@@ -2,7 +2,7 @@ _ = require('underscore')
 $ = require('jquery')
 d3 = require('d3-browserify')
 algorithms = require('./algorithms.coffee')
-VisualRunner = require('./VisualRunner.coffee')
+VisualRunner = require('visual-runner')
 
 deepClone = (obj) ->
   if _.isArray(obj)
