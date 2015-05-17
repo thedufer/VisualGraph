@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/thedufer/VisualGraph",
   "dependencies": {
+    "browserify": "^10.2.0",
     "coffeeify": "~1.0.0",
     "d3-browserify": "~3.4.12",
     "jquery": "~2.1.3",
