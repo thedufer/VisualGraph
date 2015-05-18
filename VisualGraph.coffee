@@ -2,7 +2,7 @@ _ = require('underscore')
 $ = require('jquery')
 d3 = require('d3-browserify')
 algorithms = require('./algorithms.coffee')
-VisualRunner = require('visual-runner')
+VisualRunnerRange = require('visual-runner/range')
 
 deepClone = (obj) ->
   if _.isArray(obj)
@@ -12,7 +12,7 @@ deepClone = (obj) ->
   else
     obj
 
-class VisualGraph extends VisualRunner
+class VisualGraph extends VisualRunnerRange
   constructor: ->
     @svg = d3.select('.js-svg')
     @force = @createForceLayout()
