@@ -25,6 +25,6 @@
     "d3-browserify": "~3.4.12",
     "jquery": "~2.1.3",
     "underscore": "~1.8.3",
-    "visual-runner": "0.0.1"
+    "visual-runner": "1.0.1"
   }
 }
