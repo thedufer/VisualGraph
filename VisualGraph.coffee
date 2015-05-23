@@ -232,18 +232,17 @@ class VisualGraph extends VisualRunner
       .remove()
 
     $newgnodes
+      .insert('circle')
+      .classed('node', true)
+      .attr('r', 10)
+
+    $newgnodes
       .insert('text')
-      .attr('x', '7')
-      .attr('y', '8')
+      .attr('y', 1)
     if $("#js-show-node-num").prop("checked")
       @svg.selectAll(".gnode text").text((d) -> d.num)
     else
       @svg.selectAll(".gnode text").text("")
-
-    $newgnodes
-      .insert('circle')
-      .classed('node', true)
-      .attr('r', 4)
 
     @svg.selectAll('.node').data(nodes)
       .style('fill', (d) => d.color)

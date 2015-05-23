@@ -94,6 +94,11 @@ ul {
   fill: transparent;
 }
 
+g>text {
+  text-anchor: middle;
+  alignment-baseline: middle;
+}
+
 #end {
   stroke: #999;
   stroke-width: 3;
