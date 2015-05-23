@@ -99,7 +99,7 @@ g>text {
   alignment-baseline: middle;
 }
 
-#end {
+#end,#end-self {
   stroke: #999;
   stroke-width: 3;
   fill: #999;

@@ -123,7 +123,7 @@ class VisualGraph extends VisualRunnerRange
   createForceLayout: ->
     d3.layout.force()
       .charge(-300)
-      .linkDistance(100)
+      .linkDistance(200)
       .linkStrength(0.9)
       .size([800, 400])
 
@@ -201,7 +201,11 @@ class VisualGraph extends VisualRunnerRange
     $links
       .enter()
       .insert('path')
-      .attr("marker-end", "url(#end)")
+      .attr "marker-end", (d) ->
+        if d.source == d.target
+          "url(#end-self)"
+        else
+          "url(#end)"
     $links
       .exit()
       .remove()
@@ -251,8 +255,8 @@ class VisualGraph extends VisualRunnerRange
       @svg.selectAll('.link')
         .attr('d', (d) ->
           if d.source == d.target
-            radius = 10
-            "M#{d.source.x},#{d.source.y}A#{radius},#{radius} 0 0,0 #{d.source.x},#{d.source.y - radius * 2}A#{radius},#{radius} 0 0,0 #{d.source.x},#{d.source.y}"
+            radius = 20
+            "M#{d.source.x},#{d.source.y}A#{radius},#{radius} 0 0,1 #{d.source.x},#{d.source.y - radius * 2}A#{radius},#{radius} 0 0,1 #{d.source.x},#{d.source.y}"
           else
             dx = d.target.x - d.source.x
             dy = d.target.y - d.source.y
